@@ -6,21 +6,21 @@
 
 ## 🚀 Fitur Utama
 
-- 🔍 **Pencarian Kost Canggih:**  
+- **Pencarian Kost Canggih:**  
   Temukan kost berdasarkan lokasi, harga, fasilitas, dan filter lainnya.
-- 🏷️ **Booking & Pembayaran Online:**  
+- **Booking & Pembayaran Online:**  
   Booking kost langsung dari aplikasi dan lakukan pembayaran dengan metode yang mudah.
-- ⭐ **Ulasan & Rating Penghuni Asli:**  
+- **Ulasan & Rating Penghuni Asli:**  
   Lihat review dan rating dari penghuni sebelumnya untuk keputusan yang lebih baik.
-- ❤️ **Favorit Kost:**  
+- **Favorit Kost:**  
   Simpan kost favorit Anda untuk akses cepat di kemudian hari.
-- 🏢 **Dashboard Pemilik Kost:**  
+- **Dashboard Pemilik Kost:**  
   Pemilik dapat mengelola listing kost, melihat booking, dan memantau statistik.
-- 🛡️ **Verifikasi Pemilik Kost:**  
+- **Verifikasi Pemilik Kost:**  
   Proses verifikasi dokumen untuk keamanan dan kepercayaan pengguna.
-- 🚩 **Laporan Listing Palsu/Menyesatkan:**  
+- **Laporan Listing Palsu/Menyesatkan:**  
   Pengguna dapat melaporkan listing yang tidak valid untuk menjaga kualitas platform.
-- ☎️ **Dukungan Pelanggan 24/7:**  
+- **Dukungan Pelanggan 24/7:**  
   Tim support siap membantu Anda kapan saja.
 
 ---
