@@ -106,7 +106,7 @@ BookKost dikembangkan oleh tim berikut:
 ## 📞 Kontak & Dukungan
 
 - 📧 **Email:** muhammadrakhasyamputra@gmail.com
-- 📱 **WhatsApp:** [+62 878-7131-0560](https://wa.me/62878771310560)
+- 📱 **WhatsApp:** [+62 878-7131-0560](https://wa.me/6287871310560)
 - 📸 **Instagram:** [@couraa0](https://instagram.com/couraa0)
 
 ---

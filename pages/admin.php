@@ -544,9 +544,7 @@ $pending_owners = $db->query("SELECT * FROM owner_requests WHERE status = 'pendi
                         $price = intval($_POST['price']);
                         $facilities = trim($_POST['facilities']);
                         $status = $_POST['status'];
-                        $owner_name = trim($_POST['owner_name']);
-                        $owner_phone = trim($_POST['owner_phone']);
-                        $owner_email = trim($_POST['owner_email']);
+                        $owner_id = intval($_POST['owner_id']);
                         $image_name = '';
                         // Handle upload gambar jika ada
                         if (isset($_FILES['images']) && $_FILES['images']['error'] === UPLOAD_ERR_OK) {
@@ -560,8 +558,21 @@ $pending_owners = $db->query("SELECT * FROM owner_requests WHERE status = 'pendi
                             move_uploaded_file($tmp_name, $upload_dir . $new_name);
                             $image_name = 'img/' . $new_name;
                         }
-                        if ($name && $address && $description && $price > 0 && $facilities && $status) {
-                            $insert = $db->prepare("INSERT INTO kost (name, address, description, price, facilities, images, status, owner_name, owner_phone, owner_email, created_at) VALUES (:name, :address, :description, :price, :facilities, :images, :status, :owner_name, :owner_phone, :owner_email, NOW())");
+                        // Ambil data owner dari tabel users
+                        $owner_name = $owner_phone = $owner_email = '';
+                        if ($owner_id > 0) {
+                            $owner_stmt = $db->prepare("SELECT full_name, phone, email FROM users WHERE id = :id AND role = 'owner' LIMIT 1");
+                            $owner_stmt->execute([':id' => $owner_id]);
+                            $owner = $owner_stmt->fetch(PDO::FETCH_ASSOC);
+                            if ($owner) {
+                                $owner_name = $owner['full_name'];
+                                $owner_phone = $owner['phone'];
+                                $owner_email = $owner['email'];
+                            }
+                        }
+                        // Hanya simpan owner_id ke tabel kost, info owner diambil dari tabel users saat ditampilkan
+                        if ($name && $address && $description && $price > 0 && $facilities && $status && $owner_id > 0 && $owner_name) {
+                            $insert = $db->prepare("INSERT INTO kost (name, address, description, price, facilities, images, status, owner_id, created_at) VALUES (:name, :address, :description, :price, :facilities, :images, :status, :owner_id, NOW())");
                             $insert->execute([
                                 ':name' => $name,
                                 ':address' => $address,
@@ -570,14 +581,12 @@ $pending_owners = $db->query("SELECT * FROM owner_requests WHERE status = 'pendi
                                 ':facilities' => $facilities,
                                 ':images' => $image_name,
                                 ':status' => $status,
-                                ':owner_name' => $owner_name,
-                                ':owner_phone' => $owner_phone,
-                                ':owner_email' => $owner_email
+                                ':owner_id' => $owner_id
                             ]);
                             echo '<div class="alert alert-success mt-3">Kost berhasil ditambahkan.</div>';
                             echo '<meta http-equiv="refresh" content="1;url=?page=admin&action=kost">';
                         } else {
-                            echo '<div class="alert alert-danger mt-3">Semua field wajib diisi dengan benar.</div>';
+                            echo '<div class="alert alert-danger mt-3">Semua field wajib diisi dengan benar dan ID Owner harus valid.</div>';
                         }
                     }
                     ?>
@@ -586,7 +595,7 @@ $pending_owners = $db->query("SELECT * FROM owner_requests WHERE status = 'pendi
                             <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Tambah Kost Baru</h5>
                         </div>
                         <div class="card-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" enctype="multipart/form-data" id="formTambahKost">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Nama Kost</label>
@@ -622,18 +631,13 @@ $pending_owners = $db->query("SELECT * FROM owner_requests WHERE status = 'pendi
                                     </select>
                                 </div>
                                 <h6 class="mt-4 mb-3">Informasi Pemilik</h6>
-                                <div class="row">
+                                <div class="row align-items-end">
                                     <div class="col-md-4 mb-3">
-                                        <label class="form-label">Nama Pemilik</label>
-                                        <input type="text" name="owner_name" class="form-control">
+                                        <label class="form-label">ID Owner</label>
+                                        <input type="number" name="owner_id" id="owner_id" class="form-control" required min="1">
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Telepon Pemilik</label>
-                                        <input type="tel" name="owner_phone" class="form-control">
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Email Pemilik</label>
-                                        <input type="email" name="owner_email" class="form-control">
+                                    <div class="col-md-8 mb-3">
+                                        <div id="owner_info" class="ps-3" style="font-size:0.98em;color:#8B4513;"></div>
                                     </div>
                                 </div>
                                 <button type="submit" name="add_kost" class="btn btn-success"><i class="fas fa-save"></i> Simpan</button>
@@ -641,6 +645,29 @@ $pending_owners = $db->query("SELECT * FROM owner_requests WHERE status = 'pendi
                             </form>
                         </div>
                     </div>
+                    <script>
+                    document.getElementById('owner_id').addEventListener('change', function() {
+                        var ownerId = this.value;
+                        var infoDiv = document.getElementById('owner_info');
+                        infoDiv.innerHTML = 'Memuat data owner...';
+                        if (ownerId > 0) {
+                            fetch('ajax/get_owner_info.php?id=' + ownerId)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data && data.full_name) {
+                                        infoDiv.innerHTML = '<b>Nama:</b> ' + data.full_name + '<br><b>Email:</b> ' + data.email + '<br><b>Telepon:</b> ' + (data.phone || '-');
+                                    } else {
+                                        infoDiv.innerHTML = '<span class="text-danger">Owner tidak ditemukan atau bukan role owner.</span>';
+                                    }
+                                })
+                                .catch(() => {
+                                    infoDiv.innerHTML = '<span class="text-danger">Gagal mengambil data owner.</span>';
+                                });
+                        } else {
+                            infoDiv.innerHTML = '';
+                        }
+                    });
+                    </script>
                 <?php else: ?>
                 <div class="d-flex justify-content-end mb-3">
                     <a href="?page=admin&action=kost&add=1" class="btn btn-primary">

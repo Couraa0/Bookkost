@@ -104,7 +104,7 @@ $important_places = [
                             <label class="form-label fw-semibold"><i class="fas fa-cogs"></i> Fasilitas</label>
                             <div class="d-flex flex-wrap gap-2">
                                 <?php
-                                $facility_options = ['AC', 'WiFi', 'Kamar Mandi Dalam', 'Dapur', 'Parkir', 'Kasur'];
+                                $facility_options = ['AC', 'WiFi', 'Kamar Mandi Dalam', 'Dapur', 'Parkir', 'Kasur', 'Laundry', 'Keamanan 24 Jam', 'Kulkas', 'TV'];
                                 foreach ($facility_options as $f): ?>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="facility[]" value="<?php echo $f; ?>" id="facility_<?php echo $f; ?>"

@@ -85,7 +85,9 @@ if (isset($_POST['pay_now'])) {
                                 <i class="fas fa-money-bill-wave"></i> Bayar Sekarang
                             </button>
                         </form>
-                        <a href="?page=kost_detail&id=<?php echo $booking['kost_id']; ?>" class="btn btn-link mt-3">Kembali ke Detail Kost</a>
+                        <a href="?page=kost_detail&id=<?php echo $booking['kost_id']; ?>" class="btn" style="background: #8B4513; color: #fff; font-weight:bold; border-radius:2rem; margin-top:1rem;">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Detail Kost
+                        </a>
                     <?php endif; ?>
                 </div>
             </div>
