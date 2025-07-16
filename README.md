@@ -94,8 +94,8 @@ BookKost dikembangkan oleh tim berikut:
 
 | Nama                  | NPM              | GitHub                                      |
 |-----------------------|------------------|---------------------------------------------|
-| 🧕 Alifia Nur Huda       | 2310631250005    | [@alifiafia](https://github.com/alifiafia)         |
 | 👨‍💻 M Rakha Syamputra     | 2310631250024    | [@couraa0](https://github.com/couraa0)     |
+| 🧕 Alifia Nur Huda       | 2310631250005    | [@alifiafia](https://github.com/alifiafia)         |
 | 👨‍💻 Rizky Azhari Putra    | 2310631250028    | [@rizky161004](https://github.com/rizky161004)   |
 | 👩 Yuuka Natasya Aji     | 2310631250079    | [@yuukanatasyaa](https://github.com/yuukanatasyaa)     |
 | 👦 Farhan Ramadhan       | 2310631250089    | [@kecuppaang](https://github.com/kecuppaang)       |
